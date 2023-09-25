@@ -1,24 +1,24 @@
-const BoardModel = require("../../models/master/BoardModel");
+const NewsModel = require("../../models/master/NewsModel");
 
 //Create Board
-exports.createBoard = (req, res, next) => {
+exports.createNews = (req, res, next) => {
     
     if (req.body._id === null || req.body._id === "null") {
-        saveBoard(req, res, next);
+        saveNews(req, res, next);
     } else {
-        updateBoard(req, res, next);
+        updateNews(req, res, next);
     }
   };
    
 //Function to save the Board
-async function saveBoard(req, res, next) {
+async function saveNews(req, res, next) {
     
-    let data = new BoardModel({
-        name:       req.body.name,
-        status:     req.body.status,
-        icon:       req.body.icon,
-        priority:   req.body.priority,
-        is_subscription: req.body.is_subscription
+    let data = new NewsModel({
+        newsTitle:       req.body.newsTitle,
+        newsContent:     req.body.newsContent,
+        icon:            req.body.icon,
+        priority:        req.body.priority,
+        publishedBy:     req.body.publishedBy
     });
 
     data.save()
@@ -41,14 +41,14 @@ async function saveBoard(req, res, next) {
 }
   
 //Function to update the Board
-async function updateBoard(req, res, next) {
+async function updateNews(req, res, next) {
     var updateData = {};
     for (var field in req.body) {
         updateData[field] = req.body[field];
     }
   
     //Update the details of the blog in database
-    BoardModel.findOneAndUpdate(
+    NewsModel.findOneAndUpdate(
         { _id: req.body._id },
         { $set: updateData },
         { new: true }
@@ -73,8 +73,8 @@ async function updateBoard(req, res, next) {
 }
 
 //API to get all the Board list
-exports.listBoard = (req, res, next) => {
-    BoardModel.find({ status: true })
+exports.listNews = (req, res, next) => {
+    NewsModel.find({ status: true })
     .sort({priority: 1})
     .exec()
     .then(async (info) => {
@@ -96,8 +96,8 @@ exports.listBoard = (req, res, next) => {
 };
 
 //API to get all the Board list
-exports.listAllBoard = (req, res, next) => {
-    BoardModel.find()
+exports.listAllNews = (req, res, next) => {
+    NewsModel.find()
     .sort({createdAt: -1})
     .exec()
     .then(async (info) => {
@@ -119,8 +119,8 @@ exports.listAllBoard = (req, res, next) => {
 };
 
 //API to delete the Board
-exports.deleteBoard = (req, res) => {
-    BoardModel.findOneAndDelete({ _id: req.params.boardId })
+exports.deleteNews = (req, res) => {
+    NewsModel.findOneAndDelete({ _id: req.params.newsId })
     .exec()
     .then(async (info) => {
         return res.json({

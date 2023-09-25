@@ -9,8 +9,9 @@ const BoardSchema = new mongoose.Schema({
     is_subscription: { type: Boolean, default: false },
     amount:     { type: Number, default: 999 },
     createdBy:  { type: mongoose.Schema.ObjectId, ref: 'users', default: null, index: true }
-},{
+},{ 
     timestamps: true
 })
+
 var BoardModel = mongoose.model('mboards', BoardSchema);
 module.exports = BoardModel;
